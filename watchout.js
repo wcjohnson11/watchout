@@ -54,27 +54,27 @@ var render = function(enemyData){
   enemies.transition().duration(500)
             .attr('r', 10)
           .transition().duration(1000)
-            .tween('custom', function(){
-              console.log('I am tweening');//d
+            .tween('custom',function(d){
+              customTween(d);
             });
-};
 
 
-
-var newPosition = function(enemy){
-  var startPos = {
-    x: parseFloat(enemy.attr('cx')),
-    y: parseFloat(enemy.attr('cy'))
-  };
-  var endPos = {
-    x: axes.x(endData.x),
-    y: axes.y(endData.y)
-  };
-
-  //enemy.x: enemy
-  var enemyNextPos = {
-    x: startPos.x + (endPos.x - startPos.x)*t,
-    y: startPos.y + (endPos.y - startPos.y)*t
+  var customTween = function(enemy){
+    var newPosition = function(enemy){
+      var startPos = {
+        x: parseFloat(enemy.attr('cx')),
+        y: parseFloat(enemy.attr('cy'))
+      };
+      var endPos = {
+        x: axes.x(endData.x),
+        y: axes.y(endData.y)
+      };
+      var enemyNextPos = {
+        x: startPos.x + (endPos.x - startPos.x)*t,
+        y: startPos.y + (endPos.y - startPos.y)*t
+      };
+    };
+    newPosition(enemy);
   };
 };
 
