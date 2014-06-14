@@ -37,25 +37,85 @@ var createEnemies = function(){
 
 };
 
-var render = function(enemy_data){
+var render = function(enemyData){
   var enemies = gameBoard.selectAll('circle.enemy')
-                .data(enemy_data, function(d){
+                .data(enemyData, function(d){
                   return d.id;
                 });
 
   enemies.enter().append('svg:circle')
-         .attr('class', 'enemy')
+         .attr('class', 'whatever')
          .attr('cx', function(enemy) {
             return axes.x(enemy.x);
           }).attr('cy', function(enemy) {
             return axes.y(enemy.y);
-          }).attr('r', 10);
+          }).attr('r', 0);
   enemies.exit().remove();
+  enemies.transition().duration(500)
+            .attr('r', 10)
+          .transition().duration(1000)
+            .tween('custom', function(){
+              console.log('I am tweening');//d
+            });
+};
+
+
+
+var newPosition = function(enemy){
+  var startPos = {
+    x: parseFloat(enemy.attr('cx')),
+    y: parseFloat(enemy.attr('cy'))
+  };
+  var endPos = {
+    x: axes.x(endData.x),
+    y: axes.y(endData.y)
+  };
+
+  //enemy.x: enemy
+  var enemyNextPos = {
+    x: startPos.x + (endPos.x - startPos.x)*t,
+    y: startPos.y + (endPos.y - startPos.y)*t
+  };
 };
 
 var play = function() {
-  var newEnemyPositions;
-  newEnemyPositions = createEnemies();
-  return render(newEnemyPositions);
+  var gameTurn = function(){
+    var newEnemyPositions;
+    newEnemyPositions = createEnemies();
+    render(newEnemyPositions);
+  };
+  var increaseScore = function(){
+    gameStats.score += 1;
+    updateScore();
+  };
+
+  gameTurn();
+  setInterval(gameTurn, 2000);
+  setInterval(increaseScore, 50);
 };
+
 play();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
