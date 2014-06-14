@@ -24,3 +24,38 @@ var gameBoard = d3.select('.container').append('svg:svg')
 var updateScore = function() {
   d3.select('.current').text(gameStats.score.toString());
 };
+
+var createEnemies = function(){
+  return _.range(0, gameOptions.nEnemies).map(function(i){
+    return {
+      id:i,
+      x: Math.random()*100,
+      y: Math.random()*100
+    };
+  });
+
+
+};
+
+var render = function(enemy_data){
+  var enemies = gameBoard.selectAll('circle.enemy')
+                .data(enemy_data, function(d){
+                  return d.id;
+                });
+
+  enemies.enter().append('svg:circle')
+         .attr('class', 'enemy')
+         .attr('cx', function(enemy) {
+            return axes.x(enemy.x);
+          }).attr('cy', function(enemy) {
+            return axes.y(enemy.y);
+          }).attr('r', 10);
+  enemies.exit().remove();
+};
+
+var play = function() {
+  var newEnemyPositions;
+  newEnemyPositions = createEnemies();
+  return render(newEnemyPositions);
+};
+play();
